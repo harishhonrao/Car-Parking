@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-img">
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+        <label for="username">Email</label>
+        <input type="email" id="username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" required />
+
+        <button type="submit">Register</button>
+      </form>
+      <p class="signup-link">
+        Already have an account? <a href="index.html">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Firebase Signup Script -->
+  <script type="module">
+    import { auth } from './firebase-config.js';
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const signupForm = document.getElementById('signupForm');
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Account created! Please login.");
+        window.location.href = "index.html";
+      } catch (error) {
+        alert("Signup failed: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

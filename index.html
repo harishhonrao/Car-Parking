@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-img">
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label for="login-username">Email</label>
+        <input type="email" id="login-username" required />
+
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" required />
+
+        <button type="submit">Login</button>
+      </form>
+      <p class="signup-link">
+        Don’t have an account? <a href="signup.html">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from './firebase-config.js';
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login successful!");
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("Login failed: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
